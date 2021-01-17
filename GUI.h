@@ -1,0 +1,103 @@
+#pragma once
+#include <string>
+#include <fstream>
+using namespace std;
+#include"Drawable.h"
+#include "..\DEFs.h"
+#include "CMUgraphicsLib\CMUgraphics.h"
+#include "..//Actions/Action.h"
+
+class Course;
+class AcademicYear;
+class Note;
+
+//user interface class
+class GUI
+{
+
+	enum MENU_ITEM //The items of the menu (you should add more items)
+	{
+		//Note: Items are ordered here as they appear in the menu
+		//If you want to change the menu items order, just change the order here
+		ITM_ADD,		//Add a new course
+		ITM_ADD_NOTE,
+		ITM_SHOW_NOTE,
+		ITM_LOAD,
+	    ITM_SAVE,
+		ITM_DISPLAY_INFO,
+		ITM_REDO,
+        ITM_DEL,
+		ITM_CHANGE,
+		ITM_CHECK,
+		ITM_EXIT,		//Exit item
+
+		ITM_CNT			//no. of menu items ==> This should be the last line in this enum
+
+	};
+
+	//Some constants for GUI
+	const int	WindWidth = 1000, WindHeight = 600,	//Window width and height
+		wx = 15, wy = 15,		//Window starting coordinates
+		StatusBarHeight = 60,	//Status Bar Height
+		MenuBarHeight = 80,		//Menu Bar Height (distance from top of window to bottom line of menu bar)
+		MenuItemWidth = 70,	   //Width of each item in the menu
+		YearWidth = 80,
+		YearHeight = 30,
+		semHeight = 30;
+	static const int W = 500, L = 200, Start = 100, End = 200;
+	string InfowindTitle = "Course Information";
+
+	color DrawColor = BLACK;		//Drawing color
+	color FillColor = SNOW;		//Filling color (for courses)
+	color HiColor = RED;			//Highlighting color
+	color ConnColor = GREEN;		//Connector color
+	color MsgColor = BLUE;			//Messages color
+	color infoColor= BLACK;
+	color BkGrndColor = LAVENDER;	   //Background color
+	color StatusBarColor = DARKGRAY;   //statusbar color
+	color YearColor = BLANCHEDALMOND;
+	string WindTitle = "Study-Plan Organizational Tool (SPOT)";
+	color UNIVcolor = BLACK;
+	color TRACKcolor = YELLOW;
+	color MAJORcolor = GREEN;
+	color CONCcolor = LIGHTBLUE;
+	color MINORcolor= LIGHTGOLDENROD;
+	color ElECTIVEcolor = YELLOWGREEN;
+	
+
+	window* pWind;
+	window* pNoteWind;
+	window* pValidityWindow;
+	window* p_Infowind;
+	
+public:
+	GUI();
+	void CreateMenu() const;
+	void ClearDrawingArea() const;
+	void ClearStatusBar() const;	//Clears the status bar
+
+	//output functions
+	void PrintMsg(string msg) const;		//prints a message on status bar
+
+	//Drawing functions
+	void DrawCourse(const Course* );
+	void DrawAcademicYear(const AcademicYear*);
+	void DrawNotes(vector <string> totalnotes);
+	void UpdateInterface() const;
+	void DragCourse(const Course* pCrs);
+	void DeleteCourse(int x, int y);
+	//input functions
+	ActionData GetUserAction(string msg = "") const;
+	string GetSrting() const;
+	void DrawStringModerate(string s ,int x,int y);
+	void OpenCheckWindow();
+	void CLoseCheckReport();
+	void DrawStringCritical(string s, int x, int y);
+	void Info_Window(Course*);
+
+
+	
+
+	~GUI();
+};
+
