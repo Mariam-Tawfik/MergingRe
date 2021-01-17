@@ -1,20 +1,16 @@
 #pragma once
 #include <string>
-//#include <fstream>
+#include <fstream>
 using namespace std;
-//#include"Drawable.h"
+#include"Drawable.h"
 #include "..\DEFs.h"
 #include "CMUgraphicsLib\CMUgraphics.h"
-//#include "..//Actions/Action.h"
-#include"Drawable.h"
-#include <string.h>
-#include<iostream>
-#include"../Rules.h"
+#include "..//Actions/Action.h"
 
 class Course;
 class AcademicYear;
-class Registrar;
-//class Note;
+class Note;
+
 //user interface class
 class GUI
 {
@@ -24,47 +20,56 @@ class GUI
 		//Note: Items are ordered here as they appear in the menu
 		//If you want to change the menu items order, just change the order here
 		ITM_ADD,		//Add a new course
-		ITM_Drag,
+		ITM_ADD_NOTE,
+		ITM_SHOW_NOTE,
 		ITM_LOAD,
-		ITM_LOAD_RULES,
-		ITM_MINOR,
-		ITM_SAVE,  //save current study plan
-		//ITM_ADD_NOTE,
-		//ITM_SHOW_NOTE,
-						//TODO: Add more items names here
-						STUDENT_LEVEL,
-						COURSE_STATUS,
-						GPA_CALCULATOR,
+	    ITM_SAVE,
+		ITM_DISPLAY_INFO,
+		ITM_REDO,
+        ITM_DEL,
+		ITM_CHANGE,
+		ITM_CHECK,
+		ITM_EXIT,		//Exit item
 
-
-						ITM_EXIT,		//Exit item
-
-						ITM_CNT			//no. of menu items ==> This should be the last line in this enum
+		ITM_CNT			//no. of menu items ==> This should be the last line in this enum
 
 	};
 
 	//Some constants for GUI
-	static const int	WindWidth = 1300, WindHeight = 700,	//Window width and height
+	const int	WindWidth = 1000, WindHeight = 600,	//Window width and height
 		wx = 15, wy = 15,		//Window starting coordinates
 		StatusBarHeight = 60,	//Status Bar Height
 		MenuBarHeight = 80,		//Menu Bar Height (distance from top of window to bottom line of menu bar)
-		MenuItemWidth = 70,	//Width of each item in the menu
-		YearHeight = 30;
-
-	static const int W = 500, L = 200, Start = 100, End = 200; //Info_window data
+		MenuItemWidth = 70,	   //Width of each item in the menu
+		YearWidth = 80,
+		YearHeight = 30,
+		semHeight = 30;
+	static const int W = 500, L = 200, Start = 100, End = 200;
+	string InfowindTitle = "Course Information";
 
 	color DrawColor = BLACK;		//Drawing color
-	color FillColor = YELLOW;		//Filling color (for courses)
+	color FillColor = SNOW;		//Filling color (for courses)
 	color HiColor = RED;			//Highlighting color
 	color ConnColor = GREEN;		//Connector color
 	color MsgColor = BLUE;			//Messages color
-	color BkGrndColor = LIGHTGRAY;	//Background color
-	color StatusBarColor = DARKGRAY;//statusbar color
+	color infoColor= BLACK;
+	color BkGrndColor = LAVENDER;	   //Background color
+	color StatusBarColor = DARKGRAY;   //statusbar color
+	color YearColor = BLANCHEDALMOND;
 	string WindTitle = "Study-Plan Organizational Tool (SPOT)";
-	string InfowindTitle = "Course Information";
+	color UNIVcolor = BLACK;
+	color TRACKcolor = YELLOW;
+	color MAJORcolor = GREEN;
+	color CONCcolor = LIGHTBLUE;
+	color MINORcolor= LIGHTGOLDENROD;
+	color ElECTIVEcolor = YELLOWGREEN;
+	
+
 	window* pWind;
+	window* pNoteWind;
+	window* pValidityWindow;
 	window* p_Infowind;
-	Registrar* P_reg;
+	
 public:
 	GUI();
 	void CreateMenu() const;
@@ -75,19 +80,23 @@ public:
 	void PrintMsg(string msg) const;		//prints a message on status bar
 
 	//Drawing functions
-	void DrawCourse(const Course*);
-	void Change_Course_Color(/*const Course* pCrs*/); ///////////////////////////////
-	graphicsInfo DragCourse(const Course*) const;
+	void DrawCourse(const Course* );
 	void DrawAcademicYear(const AcademicYear*);
+	void DrawNotes(vector <string> totalnotes);
 	void UpdateInterface() const;
-	//////#####		MARIAM    ##############//////////////
-	//void DrawNotes(Note n);
-	//void DeleteCourse(graphicsInfo* CourseInfographics);
-	//void DrawStringModereta(string s, double x, double y) const;
-	/// /////////////////////////////////////////
-	ActionData GUI::GetUserAction(string msg = "") const;
+	void DragCourse(const Course* pCrs);
+	void DeleteCourse(int x, int y);
+	//input functions
+	ActionData GetUserAction(string msg = "") const;
 	string GetSrting() const;
-	void Open_Window(Course*); //Create window for displaying course information 
+	void DrawStringModerate(string s ,int x,int y);
+	void OpenCheckWindow();
+	void CLoseCheckReport();
+	void DrawStringCritical(string s, int x, int y);
+	void Info_Window(Course*);
+
+
+	
 
 	~GUI();
 };
